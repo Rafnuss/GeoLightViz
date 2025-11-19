@@ -14,7 +14,7 @@ Description: Provides an interactive Shiny application for exploring and
     twilight geolocation method more transparent and intuitive, helping 
     researchers understand data quality, position uncertainty, and the role 
     of calibration in improving estimates.
-License: MIT + file LICENSE
+License: GPL-3
 URL: https://raphaelnussbaumer.com/GeoLightViz/, https://github.com/Rafnuss/GeoLightViz
 BugReports: https://github.com/Rafnuss/GeoLightViz/issues
 Depends:
