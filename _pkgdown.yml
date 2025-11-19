@@ -1,0 +1,20 @@
+url: https://raphaelnussbaumer.com/GeoLightViz/
+template:
+  bootstrap: 5
+  includes:
+    in_header: |
+      <!-- Global site tag (gtag.js) - Google Analytics -->
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-M5FY4BPHTB" ></script>
+      <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'G-M5FY4BPHTB');
+      </script>
+      <!-- Google tag (gtag.js) -->
+
+reference:
+  - title: GeoLightViz functions
+    contents:
+      - geolightviz

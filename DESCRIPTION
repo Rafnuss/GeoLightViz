@@ -1,0 +1,49 @@
+Package: GeoLightViz
+Title: Interactive Visualization Tool for Light-Level Geolocator Analysis
+Version: 0.0.0.9000
+Authors@R: 
+    person("Raphaël", "Nussbaumer", , "rafnuss@gmail.com", role = c("aut", "cre"),
+           comment = c(ORCID = "0000-0002-8185-1020"))
+Description: Provides an interactive Shiny application for exploring and 
+    understanding light-level geolocator data analysis. The app features a 
+    unique side-by-side visualization that shows how twilight events 
+    (sunrise/sunset times) translate to geographic positions on a map in 
+    real-time. Users can interactively label twilight data, define stationary 
+    periods, test position hypotheses by clicking on the map, and explore 
+    calibration effects and likelihood surfaces. Designed to make the complex 
+    twilight geolocation method more transparent and intuitive, helping 
+    researchers understand data quality, position uncertainty, and the role 
+    of calibration in improving estimates.
+License: MIT + file LICENSE
+URL: https://raphaelnussbaumer.com/GeoLightViz/, https://github.com/Rafnuss/GeoLightViz
+BugReports: https://github.com/Rafnuss/GeoLightViz/issues
+Depends:
+    R (>= 4.1.0)
+Imports:
+    assertthat,
+    shiny,
+    cli,
+    glue,
+    callr,
+    GeoPressureR
+Suggests: 
+    shinyjs,
+    bslib,
+    leaflet,
+    RColorBrewer,
+    terra,
+    plotly,
+    sf,
+    dplyr,
+    GeoLocatoR,
+    here,
+    testthat (>= 3.0.0),
+    purrr,
+    knitr,
+    rmarkdown
+Remotes: rafnuss/GeoPressureR
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.3.3
+Config/testthat/edition: 3
+VignetteBuilder: knitr
