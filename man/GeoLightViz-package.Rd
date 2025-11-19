@@ -8,6 +8,15 @@
 \description{
 Provides an interactive Shiny application for exploring and understanding light-level geolocator data analysis. The app features a unique side-by-side visualization that shows how twilight events (sunrise/sunset times) translate to geographic positions on a map in real-time. Users can interactively label twilight data, define stationary periods, test position hypotheses by clicking on the map, and explore calibration effects and likelihood surfaces. Designed to make the complex twilight geolocation method more transparent and intuitive, helping researchers understand data quality, position uncertainty, and the role of calibration in improving estimates.
 }
+\seealso{
+Useful links:
+\itemize{
+  \item \url{https://raphaelnussbaumer.com/GeoLightViz/}
+  \item \url{https://github.com/Rafnuss/GeoLightViz}
+  \item Report bugs at \url{https://github.com/Rafnuss/GeoLightViz/issues}
+}
+
+}
 \author{
 \strong{Maintainer}: Raphaël Nussbaumer \email{rafnuss@gmail.com} (\href{https://orcid.org/0000-0002-8185-1020}{ORCID})
 

@@ -1,4 +1,3 @@
-# nolint start
 #' @import shiny
 server <- function(input, output, session) {
   # Initialize reactive values and configuration

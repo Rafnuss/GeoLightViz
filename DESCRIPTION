@@ -35,10 +35,6 @@ Suggests:
     plotly,
     sf,
     dplyr,
-    GeoLocatoR,
-    here,
-    testthat (>= 3.0.0),
-    purrr,
     knitr,
     rmarkdown
 Remotes: rafnuss/GeoPressureR
