@@ -1,6 +1,7 @@
 url: https://raphaelnussbaumer.com/GeoLightViz/
 template:
   bootstrap: 5
+  bootswatch: litera
   includes:
     in_header: |
       <!-- Global site tag (gtag.js) - Google Analytics -->

@@ -10,7 +10,6 @@ experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](h
 [![R-CMD-check](https://github.com/Rafnuss/GeoLightViz/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/Rafnuss/GeoLightViz/actions/workflows/R-CMD-check.yaml)
 [![pkgdown](https://github.com/Rafnuss/GeoLightViz/actions/workflows/pkgdown.yaml/badge.svg)](https://github.com/Rafnuss/GeoLightViz/actions/workflows/pkgdown.yaml)
 [![lint](https://github.com/Rafnuss/GeoLightViz/actions/workflows/lint.yaml/badge.svg)](https://github.com/Rafnuss/GeoLightViz/actions/workflows/lint.yaml)
-[![style](https://github.com/Rafnuss/GeoLightViz/actions/workflows/style.yaml/badge.svg)](https://github.com/Rafnuss/GeoLightViz/actions/workflows/style.yaml)
 <!-- badges: end -->
 
 **GeoLightViz** is an interactive visual tool designed to help

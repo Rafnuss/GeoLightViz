@@ -21,7 +21,6 @@ knitr::opts_chunk$set(
 [![R-CMD-check](https://github.com/Rafnuss/GeoLightViz/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/Rafnuss/GeoLightViz/actions/workflows/R-CMD-check.yaml)
 [![pkgdown](https://github.com/Rafnuss/GeoLightViz/actions/workflows/pkgdown.yaml/badge.svg)](https://github.com/Rafnuss/GeoLightViz/actions/workflows/pkgdown.yaml)
 [![lint](https://github.com/Rafnuss/GeoLightViz/actions/workflows/lint.yaml/badge.svg)](https://github.com/Rafnuss/GeoLightViz/actions/workflows/lint.yaml)
-[![style](https://github.com/Rafnuss/GeoLightViz/actions/workflows/style.yaml/badge.svg)](https://github.com/Rafnuss/GeoLightViz/actions/workflows/style.yaml)
 <!-- badges: end -->
 
 **GeoLightViz** is an interactive visual tool designed to help researchers understand and explore the complete workflow from light measurements to geographic positions with light-level geolocator data.
