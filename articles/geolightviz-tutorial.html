@@ -66,55 +66,32 @@
 
     
     
+<p>This tutorial demonstrates the use of GeoLightViz with the data from
+a European Bee-eater tagged in Germany.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://raphaelnussbaumer.com/GeoLightViz/">GeoLightViz</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/Rafnuss/GeoPressureR" class="external-link">GeoPressureR</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org" class="external-link">tidyverse</a></span><span class="op">)</span></span>
+<span></span>
 <span><span class="co"># Get the path to the extdata directory</span></span>
 <span><span class="va">extdata_dir</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, package <span class="op">=</span> <span class="st">"GeoLightViz"</span><span class="op">)</span></span></code></pre></div>
 <div class="section level2">
-<h2 id="overview">Overview<a class="anchor" aria-label="anchor" href="#overview"></a>
+<h2 id="creating-the-tag-object">Creating the tag Object<a class="anchor" aria-label="anchor" href="#creating-the-tag-object"></a>
 </h2>
-<p>GeoLightViz is an interactive Shiny application designed to
-streamline the analysis of geolocator light data. It provides an
-intuitive interface for visualizing and labeling twilight events
-(sunrise/sunset times) while simultaneously displaying geographic
-positions on an interactive map.</p>
-<p>This tutorial demonstrates a two-step workflow using data from a
-European Bee-eater (tag ID: 14OI) tagged in Germany:</p>
-<ol style="list-style-type: decimal">
-<li>
-<strong>Step 1</strong>: Label twilight events and define stationary
-periods (equipment/retrieval sites)</li>
-<li>
-<strong>Step 2</strong>: Generate likelihood maps and refine
-position estimates</li>
-</ol>
-</div>
-<div class="section level2 callout-note">
-<h2 id="before-you-begin">Before You Begin<a class="anchor" aria-label="anchor" href="#before-you-begin"></a>
-</h2>
-<p>Prepare the following information for your geolocator analysis: -
-<strong>Crop dates</strong>: Start and end dates to exclude
-pre-deployment and post-retrieval data - <strong>Known
-locations</strong>: GPS coordinates for equipment and retrieval sites
-(if available)</p>
-</div>
-<div class="section level2">
-<h2 id="step-1-labeling-twilights-and-defining-stationary-periods">Step 1: Labeling Twilights and Defining Stationary Periods<a class="anchor" aria-label="anchor" href="#step-1-labeling-twilights-and-defining-stationary-periods"></a>
-</h2>
-<div class="section level3">
-<h3 id="creating-the-tag-object">Creating the Tag Object<a class="anchor" aria-label="anchor" href="#creating-the-tag-object"></a>
-</h3>
 <p>The first step is to load your geolocator data using the
 <code><a href="https://raphaelnussbaumer.com/GeoPressureR/reference/tag_create.html" class="external-link">tag_create()</a></code> function from the GeoPressureR package. This
 function reads raw light measurements and structures them into a
 standardized format.</p>
-<p><strong>Key parameters:</strong> - <code>crop_start</code> and
-<code>crop_end</code>: Define the analysis period, excluding irrelevant
-data before deployment and after retrieval -
+<p><strong>Key parameters:</strong></p>
+<ul>
+<li>
+<code>crop_start</code> and <code>crop_end</code>: Define the
+analysis period, excluding irrelevant data before deployment and after
+retrieval</li>
+<li>
 <code>assert_pressure = FALSE</code>: Required for light-only
-geolocators without atmospheric pressure sensors</p>
+geolocators without atmospheric pressure sensors</li>
+</ul>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">tag</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://raphaelnussbaumer.com/GeoPressureR/reference/tag_create.html" class="external-link">tag_create</a></span><span class="op">(</span></span>
 <span>  <span class="st">"14OI"</span>,</span>
@@ -129,260 +106,123 @@ geolocators without atmospheric pressure sensors</p>
 <span></span>
 <span><span class="co"># View the tag structure</span></span>
 <span><span class="va">tag</span></span></code></pre></div>
-<p>The resulting <code>tag</code> object contains: - <strong>Light
-data</strong>: Cropped to your specified date range - <strong>Twilight
-events</strong>: Automatically detected sunrise and sunset times</p>
-</div>
-<div class="section level3">
-<h3 id="launching-the-interactive-application">Launching the Interactive Application<a class="anchor" aria-label="anchor" href="#launching-the-interactive-application"></a>
-</h3>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/geolightviz.html">geolightviz</a></span><span class="op">(</span><span class="va">tag</span><span class="op">)</span></span></code></pre></div>
-</div>
-<div class="section level3">
-<h3 id="working-in-the-application">Working in the Application<a class="anchor" aria-label="anchor" href="#working-in-the-application"></a>
-</h3>
-<p>The GeoLightViz interface provides two main functions:</p>
-<div class="section level4">
-<h4 id="labeling-twilight-events">1. Labeling Twilight Events<a class="anchor" aria-label="anchor" href="#labeling-twilight-events"></a>
-</h4>
-<p>Twilight times detected from light measurements can be noisy due to
-weather conditions, shading, or sensor issues. The labeling tool helps
-you identify and exclude problematic data points.</p>
-<p><strong>How to label:</strong> 1. Click <strong>“Start
-labeling”</strong> in the toolbar 2. <strong>Single points</strong>:
-Click individual twilight markers to toggle their status 3.
-<strong>Batch selection</strong>: Draw a rectangle to select multiple
-points at once 4. <strong>Discard criteria</strong>: Remove twilights
-that show clear irregularities or outliers</p>
-</div>
-<div class="section level4">
-<h4 id="defining-stationary-periods-staps">2. Defining Stationary Periods (Staps)<a class="anchor" aria-label="anchor" href="#defining-stationary-periods-staps"></a>
-</h4>
-<p>Stationary periods are time intervals when the bird remained at a
-fixed location. These are crucial for: - <strong>Calibration</strong>:
-Using known locations (e.g., breeding sites) to estimate sun elevation
-angles - <strong>Migration analysis</strong>: Identifying stopover sites
-and wintering grounds</p>
-<p><strong>How to create staps:</strong> 1. Click the <strong>“+”
-icon</strong> in the toolbar to enable drawing mode 2. <strong>Draw a
-rectangle</strong> on the light plot to define the time range 3.
-<strong>Look for patterns</strong>: Parallel, smooth twilight lines
-indicate stable latitude (stationary behavior)</p>
-</div>
-</div>
-</div>
-<div class="section level2 callout-tip">
-<h2 id="identifying-stationary-periods">Identifying Stationary Periods<a class="anchor" aria-label="anchor" href="#identifying-stationary-periods"></a>
-</h2>
-<p>In the light plot, stationary periods appear as: - <strong>Parallel
-sunrise/sunset lines</strong> (constant day length = stable latitude) -
-<strong>Minimal scatter</strong> in twilight times - <strong>Extended
-duration</strong> (typically weeks to months for wintering sites)</p>
-<p>For this initial step, focus on defining: - <strong>Equipment
-period</strong>: Tag attachment to departure - <strong>Retrieval
-period</strong>: Arrival back to recapture</p>
-</div>
-<div class="section level3">
-<h3 id="exporting-your-work">Exporting Your Work<a class="anchor" aria-label="anchor" href="#exporting-your-work"></a>
-</h3>
-<p>Once you’ve completed labeling and stap definition:</p>
-<ol style="list-style-type: decimal">
-<li>
-<strong>Export twilight labels</strong>:
+<p>The resulting <code>tag</code> object contains:</p>
 <ul>
-<li>Click <strong>“Export”</strong> → <strong>“Export Twilight
-Labels”</strong>
-</li>
-<li>Save as <code>data/twilight-label/14OI.csv</code>
-</li>
-</ul>
-</li>
 <li>
-<strong>Export stationary periods</strong>:
-<ul>
-<li>Click <strong>“Export”</strong> → <strong>“Export
-Staps”</strong>
-</li>
-<li>Save as <code>data/staps/14OI.csv</code>
-</li>
+<strong>Light data</strong>: Cropped to your specified date
+range</li>
+<li>
+<strong>Twilight events</strong>: Automatically detected sunrise and
+sunset times</li>
 </ul>
-</li>
-</ol>
-<p>These files will be used in Step 2 for spatial analysis.</p>
 </div>
 <div class="section level2">
-<h2 id="step-2-visualizing-positions-with-likelihood-maps">Step 2: Visualizing Positions with Likelihood Maps<a class="anchor" aria-label="anchor" href="#step-2-visualizing-positions-with-likelihood-maps"></a>
+<h2 id="launching-the-interactive-application">Launching the Interactive Application<a class="anchor" aria-label="anchor" href="#launching-the-interactive-application"></a>
 </h2>
-<p>In this step, we enhance the analysis by incorporating spatial
-information. Using the twilight labels and known locations from Step 1,
-GeoLightViz generates likelihood maps showing probable bird positions
-based on day length patterns.</p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/geolightviz.html">geolightviz</a></span><span class="op">(</span><span class="va">tag</span><span class="op">)</span></span></code></pre></div>
 <div class="section level3">
-<h3 id="loading-previously-labeled-data">Loading Previously Labeled Data<a class="anchor" aria-label="anchor" href="#loading-previously-labeled-data"></a>
+<h3 id="labeling-twilight-events">1. Labeling Twilight Events<a class="anchor" aria-label="anchor" href="#labeling-twilight-events"></a>
 </h3>
-<p>First, load the twilight labels you created and exported in Step
-1:</p>
+<p>Twilight times detected from light measurements can be noisy due to
+weather conditions, shading, or sensor issues. The main twilight plot
+provides a tool to help you identify and exclude problematic data
+points.</p>
+<p><strong>How to label:</strong></p>
+<ol style="list-style-type: decimal">
+<li>Click <strong>“Start labeling”</strong> in the toolbar</li>
+<li>
+<strong>Single points</strong>: Click individual twilight markers to
+toggle their status</li>
+<li>
+<strong>Batch selection</strong>: Draw a rectangle to select
+multiple points at once</li>
+</ol>
+</div>
+<div class="section level3">
+<h3 id="defining-stationary-periods-staps">2. Defining Stationary Periods (Staps)<a class="anchor" aria-label="anchor" href="#defining-stationary-periods-staps"></a>
+</h3>
+<p>Stationary periods are time intervals when the bird remained at a
+fixed location.</p>
+<p><strong>How to create staps:</strong></p>
+<ol style="list-style-type: decimal">
+<li>Click the <strong>“+” icon</strong> in the toolbar to enable drawing
+mode</li>
+<li>
+<strong>Draw a rectangle</strong> on the light plot to define the
+time range</li>
+<li>
+<strong>Look for patterns</strong>: Parallel, smooth twilight lines
+indicate stable latitude (stationary behavior)</li>
+</ol>
+</div>
+<div class="section level3">
+<h3 id="exporting-your-work">3. Exporting Your Work<a class="anchor" aria-label="anchor" href="#exporting-your-work"></a>
+</h3>
+<p>You can export both the twilight label (typically stored in
+<code>data/twilight-label/14OI-labeled.csv</code>) and the staps
+(typically stored in <code>data/staps/14OI.csv</code>). These files will
+be used in Step 2 for spatial analysis.</p>
+</div>
+</div>
+<div class="section level2">
+<h2 id="lauching-the-app-with-likelihood-maps">Lauching the app with Likelihood Maps<a class="anchor" aria-label="anchor" href="#lauching-the-app-with-likelihood-maps"></a>
+</h2>
+<p>Using the twilight labels and known locations, GeoLightViz generates
+likelihood maps showing probable bird positions based on day length
+patterns.</p>
+<div class="section level3">
+<h3 id="loading-the-twilight-labels-and-known-locations">Loading the twilight labels and known locations<a class="anchor" aria-label="anchor" href="#loading-the-twilight-labels-and-known-locations"></a>
+</h3>
+<p>First, load the twilight labels:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">tag</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://raphaelnussbaumer.com/GeoPressureR/reference/twilight_label_read.html" class="external-link">twilight_label_read</a></span><span class="op">(</span></span>
 <span>  <span class="va">tag</span>,</span>
 <span>  file <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">extdata_dir</span>, <span class="st">"data/twilight-label/14OI-labeled.csv"</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-</div>
-<div class="section level3">
-<h3 id="adding-known-location-information">Adding Known Location Information<a class="anchor" aria-label="anchor" href="#adding-known-location-information"></a>
-</h3>
 <p>Next, load the stationary periods and add GPS coordinates for known
-locations. In this example, we add coordinates for the
-equipment/breeding site in Germany:</p>
+locations</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">tag</span><span class="op">$</span><span class="va">stap</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.csv</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">extdata_dir</span>, <span class="st">"data/staps/14OI.csv"</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">mutate</span><span class="op">(</span></span>
 <span>    known_lon <span class="op">=</span> <span class="fl">11.93128</span>,</span>
 <span>    known_lat <span class="op">=</span> <span class="fl">51.3629</span></span>
 <span>  <span class="op">)</span></span></code></pre></div>
-<p><strong>Why known locations matter:</strong> - They serve as
-<strong>calibration points</strong> for estimating the sun elevation
-angle - This angle varies by species, habitat, and tag placement -
-Accurate calibration improves position estimates throughout the entire
-tracking period</p>
-</div>
-<div class="section level3">
-<h3 id="configuring-the-spatial-grid">Configuring the Spatial Grid<a class="anchor" aria-label="anchor" href="#configuring-the-spatial-grid"></a>
-</h3>
-<p>Define the geographic extent and resolution for likelihood map
-calculations:</p>
+<p>Finally, define the geographic extent and resolution for likelihood
+map calculations (See <code>GeoPressureR:::tag_set_map()</code> for more
+details):</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">tag</span><span class="op">$</span><span class="va">param</span><span class="op">$</span><span class="va">tag_set_map</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
-<span>  extent <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">5</span>, <span class="fl">25</span>, <span class="op">-</span><span class="fl">10</span>, <span class="fl">55</span><span class="op">)</span>, <span class="co"># put the same order in the excel file</span></span>
+<span>  extent <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">5</span>, <span class="fl">25</span>, <span class="op">-</span><span class="fl">10</span>, <span class="fl">55</span><span class="op">)</span>,</span>
 <span>  scale <span class="op">=</span> <span class="fl">5</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<p><strong>Parameters explained:</strong> - <code>extent</code>:
-Geographic bounding box <code>[west, east, south, north]</code> in
-decimal degrees - Defines the area where the bird could potentially have
-traveled - Should encompass known breeding, migration, and wintering
-regions - <code>scale</code>: Grid resolution (higher = finer detail,
-but slower computation) - <code>scale = 1</code>: ~111 km grid cells
-(fast, suitable for initial exploration) - <code>scale = 5</code>: ~22
-km grid cells (detailed, used here for European Bee-eater)</p>
-</div>
-</div>
-<div class="section level2 callout-warning">
-<h2 id="choosing-your-map-extent">Choosing Your Map Extent<a class="anchor" aria-label="anchor" href="#choosing-your-map-extent"></a>
-</h2>
-<p>The extent should be large enough to cover all possible locations but
-not unnecessarily large, as this increases computation time. For most
-species: - Include known breeding and wintering areas - Add buffer zones
-for potential stopover sites - Consider the species’ known migration
-range</p>
-</div>
-<div class="section level3">
-<h3 id="launching-the-enhanced-application">Launching the Enhanced Application<a class="anchor" aria-label="anchor" href="#launching-the-enhanced-application"></a>
-</h3>
+<p>Launching the Enhanced Application</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/geolightviz.html">geolightviz</a></span><span class="op">(</span><span class="va">tag</span><span class="op">)</span></span></code></pre></div>
-</div>
-<div class="section level3">
-<h3 id="features-available-in-the-enhanced-application">Features Available in the Enhanced Application<a class="anchor" aria-label="anchor" href="#features-available-in-the-enhanced-application"></a>
-</h3>
 <p>With the map configuration complete, GeoLightViz now provides
 additional powerful features:</p>
-<div class="section level4">
-<h4 id="twilight-labeling-as-before">Twilight Labeling (as before)<a class="anchor" aria-label="anchor" href="#twilight-labeling-as-before"></a>
-</h4>
-<ul>
-<li>Continue to refine your twilight labels</li>
-<li>Discard or restore individual events as needed</li>
-</ul>
-</div>
-<div class="section level4">
-<h4 id="stationary-period-management-as-before">Stationary Period Management (as before)<a class="anchor" aria-label="anchor" href="#stationary-period-management-as-before"></a>
-</h4>
-<ul>
-<li>Add, modify, or remove stationary periods</li>
-<li>Adjust start/end times for precision</li>
-</ul>
-</div>
-<div class="section level4">
-<h4 id="geographic-position-visualization-new">Geographic Position Visualization (NEW)<a class="anchor" aria-label="anchor" href="#geographic-position-visualization-new"></a>
-</h4>
 <p>The map panel now displays: - <strong>Likelihood surfaces</strong>:
 Color-coded probability maps based on day length matching -
 <strong>Position markers</strong>: Geographic locations for each
 stationary period - <strong>Interactive exploration</strong>: Click
 positions on the map to see corresponding twilight patterns</p>
-</div>
-<div class="section level4">
-<h4 id="position-refinement">Position Refinement<a class="anchor" aria-label="anchor" href="#position-refinement"></a>
-</h4>
 <ul>
-<li>
-<strong>Manual adjustment</strong>: Click on the map to test
-different position hypotheses</li>
-<li>
-<strong>Twilight comparison</strong>: Observe how predicted twilight
-times (lines) match observed data (points)</li>
-<li>
-<strong>Maximum likelihood</strong>: Use the “ML” button to
-automatically find the most probable position</li>
+<li><p><strong>Manual adjustment</strong>: Click on the map to test
+different position hypotheses</p></li>
+<li><p><strong>Twilight comparison</strong>: Observe how predicted
+twilight times (lines) match observed data (points)</p></li>
+<li><p><strong>Maximum likelihood</strong>: Use the “ML” button to
+automatically find the most probable position</p></li>
+<li><p><strong>Compare twilight distributions</strong> between
+calibrated stationary periods (with known coordinates) and uncalibrated
+periods</p></li>
+<li><p><strong>Evaluate quality</strong>: Assess how well the sun
+elevation angle calibration performs across different time
+periods</p></li>
+<li><p><strong>Visualize uncertainty</strong>: Use the histogram view to
+examine twilight error distributions</p></li>
 </ul>
 </div>
-<div class="section level4">
-<h4 id="calibration-assessment">Calibration Assessment<a class="anchor" aria-label="anchor" href="#calibration-assessment"></a>
-</h4>
-<ul>
-<li>
-<strong>Compare twilight distributions</strong> between calibrated
-stationary periods (with known coordinates) and uncalibrated
-periods</li>
-<li>
-<strong>Evaluate quality</strong>: Assess how well the sun elevation
-angle calibration performs across different time periods</li>
-<li>
-<strong>Visualize uncertainty</strong>: Use the histogram view to
-examine twilight error distributions</li>
-</ul>
-</div>
-</div>
-<div class="section level2 callout-tip">
-<h2 id="interpreting-likelihood-maps">Interpreting Likelihood Maps<a class="anchor" aria-label="anchor" href="#interpreting-likelihood-maps"></a>
-</h2>
-<ul>
-<li>
-<strong>Warm colors (yellow/red)</strong>: High probability
-locations based on day length</li>
-<li>
-<strong>Cool colors (blue)</strong>: Low probability locations</li>
-<li>
-<strong>Multiple peaks</strong>: Indicate ambiguity (common with
-light-only data due to latitude symmetry)</li>
-<li>
-<strong>Narrow distributions</strong>: Suggest confident position
-estimates</li>
-</ul>
-</div>
-<hr>
-<div class="section level2">
-<h2 id="next-steps">Next Steps<a class="anchor" aria-label="anchor" href="#next-steps"></a>
-</h2>
-<p>After completing this workflow, you can:</p>
-<ol style="list-style-type: decimal">
-<li>
-<strong>Export refined results</strong> for use in other
-analyses</li>
-<li>
-<strong>Integrate pressure data</strong> (if available) using
-GeoPressureR for improved accuracy</li>
-<li>
-<strong>Perform statistical path analysis</strong> to estimate
-migration routes</li>
-<li>
-<strong>Generate publication-ready figures</strong> using the
-exported data</li>
-</ol>
-<p>For advanced features including pressure integration, movement
-modeling, and wind assistance analysis, see the <a href="https://raphaelnussbaumer.com/GeoPressureR/" class="external-link">GeoPressureR
-documentation</a>.</p>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>

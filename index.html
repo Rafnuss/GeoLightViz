@@ -58,33 +58,25 @@
 </h1></div>
 <!-- badges: start -->
 
-<p><strong>GeoLightViz</strong> is an interactive visual tool designed to help researchers understand and explore the complete workflow from light measurements to geographic positions with light-level geolocator data.</p>
-<p>The app provides a unique <strong>side-by-side visualization</strong> where you can see how twilight events (sunrise/sunset times) directly translate to positions on a map. This interadevtools::build_readme()ctive linkage helps you:</p>
-<ul>
-<li>🔍 <strong>Visualize the twilight → position relationship</strong>: See immediately how each twilight pattern corresponds to a geographic location</li>
-<li>🎨 <strong>Explore labeling effects</strong>: Interactively label or discard twilight points and watch how this changes position estimates in real-time</li>
-<li>📊 <strong>Understand calibration</strong>: Compare calibrated vs uncalibrated periods to grasp how known locations improve accuracy</li>
-<li>🗺️ <strong>Test position hypotheses</strong>: Click anywhere on the map to see what twilight pattern would be expected at that location</li>
-<li>⚡ <strong>Learn by doing</strong>: The interactive interface makes the complex twilight geolocation method more intuitive and transparent</li>
-</ul>
-<p>Rather than treating geolocator analysis as a black box, GeoLightViz opens up the process, making it easier to understand why certain positions are more likely, how data quality affects results, and what role calibration plays in improving estimates.</p>
+<p><strong>GeoLightViz</strong> is an R package that provides an interactive Shiny application for visualizing and analyzing light-level geolocator data. The app helps researchers explore the complete workflow from raw light measurements to geographic positions.</p>
 <div class="section level2">
 <h2 id="features">Features<a class="anchor" aria-label="anchor" href="#features"></a>
 </h2>
 <ul>
-<li>� <strong>Interactive twilight-map linkage</strong>: Side-by-side visualization showing the direct connection between twilight patterns and geographic positions</li>
-<li>🎯 <strong>Real-time position updates</strong>: Click on the map to instantly see predicted twilight times for any location</li>
-<li>✏️ <strong>Visual labeling feedback</strong>: Discard problematic twilight points and immediately see how position estimates change</li>
-<li>📍 <strong>Stationary period explorer</strong>: Define time periods and watch the app calculate the most likely geographic position</li>
-<li>� <strong>Calibration comparison</strong>: Visualize twilight error distributions to understand calibration quality and its impact</li>
-<li>�️ <strong>Likelihood exploration</strong>: Explore probability surfaces to understand position uncertainty and alternative locations</li>
+<li>🔍 <strong>Side-by-side twilight–map visualization</strong>: Instantly see how sunrise/sunset times translate to geographic positions</li>
+<li>✏️ <strong>Interactive labeling</strong>: Interactively discard twilight points and watch position estimates update in real time</li>
+<li>📍 <strong>Stationary period explorer</strong>: Define periods where the bird can be assumed at the same location and estimate likely locations</li>
+<li>🎯 <strong>Real-time position updates</strong>: Change the position on the map to preview expected twilight patterns for any location</li>
+<li>📊 <strong>Calibration comparison</strong>: Visualize error distributions to assess the calibration assumptions and its impact on known locations</li>
+<li>🗺️ <strong>Likelihood exploration</strong>: Explore probability surfaces and position uncertainty</li>
 <li>💾 <strong>Workflow support</strong>: Export labeled data for integration with GeoPressureR’s advanced modeling tools</li>
+<li>⚡ <strong>Learn by doing</strong>: The intuitive interface makes twilight geolocation methods transparent and accessible</li>
 </ul>
 </div>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
-<p>You can install the development version of GeoLightViz from <a href="https://github.com/" class="external-link">GitHub</a> with:</p>
+<p>You can install the development version of GeoLightViz with:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># install.packages("pak")</span></span>
 <span><span class="fu">pak</span><span class="fu">::</span><span class="fu"><a href="https://pak.r-lib.org/reference/pak.html" class="external-link">pak</a></span><span class="op">(</span><span class="st">"Rafnuss/GeoLightViz"</span><span class="op">)</span></span></code></pre></div>
@@ -92,67 +84,13 @@
 <div class="section level2">
 <h2 id="quick-start">Quick Start<a class="anchor" aria-label="anchor" href="#quick-start"></a>
 </h2>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://raphaelnussbaumer.com/GeoLightViz/">GeoLightViz</a></span><span class="op">)</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/Rafnuss/GeoPressureR" class="external-link">GeoPressureR</a></span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># Load your geolocator data</span></span>
-<span><span class="va">tag</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://raphaelnussbaumer.com/GeoPressureR/reference/tag_create.html" class="external-link">tag_create</a></span><span class="op">(</span></span>
-<span>  <span class="st">"your_tag_id"</span>,</span>
-<span>  directory <span class="op">=</span> <span class="st">"path/to/data"</span>,</span>
-<span>  crop_start <span class="op">=</span> <span class="st">"2015-08-09"</span>,</span>
-<span>  crop_end <span class="op">=</span> <span class="st">"2016-07-11"</span>,</span>
-<span>  assert_pressure <span class="op">=</span> <span class="cn">FALSE</span></span>
-<span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># Detect twilight events</span></span>
-<span><span class="va">tag</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://raphaelnussbaumer.com/GeoPressureR/reference/twilight_create.html" class="external-link">twilight_create</a></span><span class="op">(</span><span class="va">tag</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># Launch the interactive app</span></span>
-<span><span class="fu"><a href="reference/geolightviz.html">geolightviz</a></span><span class="op">(</span><span class="va">tag</span><span class="op">)</span></span></code></pre></div>
-<p>That’s it! The app will open in your browser where you can: 1. <strong>Label twilights</strong> to exclude problematic data 2. <strong>Define stationary periods</strong> by drawing rectangles on the plot 3. <strong>Explore positions</strong> on the interactive map 4. <strong>Export your results</strong> for further analysis</p>
-<p>For a detailed step-by-step tutorial with examples, see the <strong><a href="vignettes/geolightviz-tutorial.Rmd">Getting Started vignette</a></strong>.</p>
-</div>
-<div class="section level2">
-<h2 id="workflow-overview">Workflow Overview<a class="anchor" aria-label="anchor" href="#workflow-overview"></a>
-</h2>
-<div class="sourceCode" id="cb3"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="fl">1.</span> Load data → <span class="fl">2.</span> Detect twilights → <span class="fl">3.</span> Launch app → <span class="fl">4.</span> Explore <span class="sc">&amp;</span> label → <span class="fl">5.</span> Export</span>
-<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a>                                           ↓</span>
-<span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a>                              (Optional<span class="sc">:</span> Add map configuration)</span>
-<span id="cb3-4"><a href="#cb3-4" tabindex="-1"></a>                                           ↓</span>
-<span id="cb3-5"><a href="#cb3-5" tabindex="-1"></a>                         <span class="fl">6.</span> Relaunch → <span class="fl">7.</span> Explore with spatial context</span></code></pre></div>
-<p><strong>The power of GeoLightViz</strong>: Unlike batch processing tools, the app lets you explore the data interactively at each step, building intuition about how twilight geolocation works and where uncertainty comes from.</p>
-<p>📖 <strong><a href="vignettes/geolightviz-tutorial.Rmd">See the complete workflow in the tutorial →</a></strong></p>
-</div>
-<div class="section level2">
-<h2 id="key-concepts">Key Concepts<a class="anchor" aria-label="anchor" href="#key-concepts"></a>
-</h2>
-<div class="section level3">
-<h3 id="interactive-twilight-position-linkage">Interactive Twilight-Position Linkage<a class="anchor" aria-label="anchor" href="#interactive-twilight-position-linkage"></a>
-</h3>
-<p>The core feature of GeoLightViz is the <strong>real-time connection</strong> between twilight patterns and map positions. As you interact with either panel (twilight plot or map), the other updates instantly, helping you understand: - How day length constrains latitude - How twilight timing constrains longitude<br>
-- Why multiple locations can produce similar twilight patterns (the “latitude ambiguity” problem) - How data quality affects position certainty</p>
-</div>
-<div class="section level3">
-<h3 id="what-youll-learn-in-the-app">What You’ll Learn in the App<a class="anchor" aria-label="anchor" href="#what-youll-learn-in-the-app"></a>
-</h3>
-<p><strong>Twilight Events</strong>: See how sunrise/sunset times translate to geographic positions</p>
-<p><strong>Stationary Periods</strong>: Identify time intervals of stable location by their parallel twilight lines</p>
-<p><strong>Calibration Effects</strong>: Compare error distributions to understand how known locations improve accuracy</p>
-<p><strong>Likelihood Maps</strong>: Explore probability surfaces and test “what if” scenarios by clicking on the map</p>
-<p>📖 <strong><a href="vignettes/geolightviz-tutorial.Rmd">Learn more about these concepts in the tutorial →</a></strong></p>
-</div>
-</div>
-<div class="section level2">
-<h2 id="example-data">Example Data<a class="anchor" aria-label="anchor" href="#example-data"></a>
-</h2>
 <p>The package includes example data from a European Bee-eater tagged in Germany. Try it out:</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Get example data path</span></span>
 <span><span class="va">extdata_dir</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, package <span class="op">=</span> <span class="st">"GeoLightViz"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Load and launch</span></span>
-<span><span class="va">tag</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://raphaelnussbaumer.com/GeoPressureR/reference/tag_create.html" class="external-link">tag_create</a></span><span class="op">(</span></span>
+<span><span class="va">tag</span> <span class="op">&lt;-</span> <span class="fu">tag_create</span><span class="op">(</span></span>
 <span>  <span class="st">"14OI"</span>,</span>
 <span>  directory <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">extdata_dir</span>, <span class="st">"data/raw-tag/14OI"</span><span class="op">)</span>,</span>
 <span>  crop_start <span class="op">=</span> <span class="st">"2015-08-09"</span>,</span>
@@ -160,48 +98,17 @@
 <span>  assert_pressure <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">tag</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://raphaelnussbaumer.com/GeoPressureR/reference/twilight_create.html" class="external-link">twilight_create</a></span><span class="op">(</span><span class="va">tag</span><span class="op">)</span></span>
 <span><span class="fu"><a href="reference/geolightviz.html">geolightviz</a></span><span class="op">(</span><span class="va">tag</span><span class="op">)</span></span></code></pre></div>
-<p>📖 <strong><a href="vignettes/geolightviz-tutorial.Rmd">See the full example with map configuration →</a></strong></p>
+<p>That’s it! The app will open in your browser where you can:</p>
+<div class="callout-note">
+<p>📖 For a detailed step-by-step tutorial with examples, see <strong><a href="vignettes/geolightviz-tutorial.Rmd">See the complete workflow in the tutorial →</a></strong></p>
 </div>
-<div class="section level2">
-<h2 id="function-arguments">Function Arguments<a class="anchor" aria-label="anchor" href="#function-arguments"></a>
-</h2>
-<div class="section level3">
-<h3 id="geolightvizx-path--null-launch_browser--true-run_bg--true">
-<code>geolightviz(x, path = NULL, launch_browser = TRUE, run_bg = TRUE)</code><a class="anchor" aria-label="anchor" href="#geolightvizx-path--null-launch_browser--true-run_bg--true"></a>
-</h3>
-<p><strong>Arguments:</strong> - <code>x</code>: A GeoPressureR <code>tag</code> object, <code>.RData</code> file, or tag ID - <code>path</code>: Optional <code>path</code> or <code>pressurepath</code> data.frame from GeoPressureR - <code>launch_browser</code>: If <code>TRUE</code> (default), opens in browser; if <code>FALSE</code>, opens in RStudio viewer - <code>run_bg</code>: If <code>TRUE</code> (default), runs app in background process; if <code>FALSE</code>, blocks R console</p>
-</div>
-</div>
-<div class="section level2">
-<h2 id="next-steps">Next Steps<a class="anchor" aria-label="anchor" href="#next-steps"></a>
-</h2>
-<p>After labeling and position estimation with GeoLightViz, continue with <a href="https://raphaelnussbaumer.com/GeoPressureR/" class="external-link">GeoPressureR</a> for:</p>
-<ul>
-<li>Integrating atmospheric pressure data</li>
-<li>Graph-based movement modeling<br>
-</li>
-<li>Wind assistance analysis</li>
-<li>Statistical path optimization</li>
-</ul>
-</div>
-<div class="section level2">
-<h2 id="getting-help">Getting Help<a class="anchor" aria-label="anchor" href="#getting-help"></a>
-</h2>
-<ul>
-<li>📖 <a href="vignettes/geolightviz-tutorial.Rmd">Tutorial vignette</a>: Detailed step-by-step guide</li>
-<li>💻 <a href="man/geolightviz.Rd">Function documentation</a>: <code><a href="reference/geolightviz.html">?geolightviz</a></code>
-</li>
-<li>🔗 <a href="https://raphaelnussbaumer.com/GeoPressureR/" class="external-link">GeoPressureR</a>: Companion package documentation</li>
-<li>🐛 <a href="https://github.com/Rafnuss/GeoLightViz/issues" class="external-link">Issues</a>: Report bugs or request features</li>
-</ul>
 </div>
 <div class="section level2">
 <h2 id="citation">Citation<a class="anchor" aria-label="anchor" href="#citation"></a>
 </h2>
 <p>If you use GeoLightViz in your research, please cite:</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="co"># Citation information will be added</span></span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="co"># Citation information will be added</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="license">License<a class="anchor" aria-label="anchor" href="#license"></a>
