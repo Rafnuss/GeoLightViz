@@ -27,10 +27,17 @@ setup_navigation_observers <- function(
       update_stapath_helper(stapath(), session)
     })
   })
-
   # Render tag ID
   output$tag_id <- renderUI({
     return(HTML(glue::glue("<h3 style='margin:0;'>", .tag$param$id, "</h3>")))
+  })
+
+  # Toggle visibility of navigation controls
+  observe({
+    shinyjs::toggle(
+      id = "stapath_nav_container",
+      condition = !is.null(stapath()) && nrow(stapath()) > 0
+    )
   })
 
   # Previous position button

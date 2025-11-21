@@ -38,9 +38,8 @@ render_map_output <- function(
       ) |>
       leaflet::addControl(
         div(
-          style = "background-color: white; padding: 6px 8px; border-radius: 5px;",
+          class = "map-control-box",
           div(
-            style = "margin-bottom: 8px;",
             radioButtons(
               "map_style",
               NULL,

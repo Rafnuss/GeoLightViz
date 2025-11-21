@@ -11,57 +11,38 @@ ui <- function() {
         href = "https://fonts.googleapis.com/css?family=Oswald",
         rel = "stylesheet"
       ),
-      shiny::tags$style(
+      shiny::tags$link(
+        rel = "stylesheet",
         type = "text/css",
-        "html, body {width:100%;height:100%; font-family: Oswald, sans-serif;}
-      .primary{background-color:#007bff; color: #fff;}
-      .selectize-input{border-radius:0; border-color:#404040;}
-      .form-group{margin-bottom: 0;}"
-      ),
-      #  .js-plotly-plot .plotly .modebar{left: 0};
-      # includeHTML("meta.html"),
+        href = "style.css"
+      )
     ),
     div(
       class = "container-fluid d-flex flex-column vh-100",
       fluidRow(
         class = "text-center bg-black align-items-center",
         column(
-          2,
-          tags$h2("GeoLightViz", style = "color:white;"), #
-          # tags$a("About GeoPressureR", href = "https://raphaelnussbaumer.com/GeoPressureR/"),
-          htmlOutput("tag_id")
-        ),
-        column(
           4,
           div(
-            actionButton(
-              "label_twilight",
-              "Start labeling",
-              class = "primary",
-              icon = icon("pen")
-            ),
-            downloadButton(
-              "export_twilight",
-              "Export labeling",
-              class = "primary"
-            )
-          )
-        ),
-        column(
-          3,
+            class = "d-flex align-items-center gap-2",
+            shiny::tags$h2("GeoLightViz", class = "m-0"),
+            htmlOutput("tag_id", class = "text-secondary m-0")
+          ),
           fluidRow(
+            id = "stapath_nav_container",
+            class = "mt-2 d-flex justify-content-center",
             column(
               2,
-              style = "padding:0px;",
+              class = "p-0",
               actionButton(
                 "previous_position",
                 "<",
-                style = "width:100%; height:100%; padding:0; border-top-right-radius: 0;border-bottom-right-radius: 0;"
+                class = "btn-nav btn-nav-prev"
               )
             ),
             column(
               6,
-              style = "padding:0px;",
+              class = "p-0",
               selectInput(
                 "stap_id",
                 label = NULL,
@@ -71,46 +52,92 @@ ui <- function() {
             ),
             column(
               2,
-              style = "padding:0px;",
+              class = "p-0",
               actionButton(
                 "next_position",
                 ">",
-                style = "width:100%; height:100%; padding:0; border-top-left-radius: 0;border-bottom-left-radius: 0;"
+                class = "btn-nav btn-nav-next"
               )
-            ),
-            column(
-              2,
-              style = "padding:0px;",
-              actionButton(
-                "show_twilight_histogram",
-                "",
-                icon = icon("chart-bar"),
-                style = "width:100%; height:100%; padding:0;"
-              )
-            ),
-          ),
+            )
+          )
         ),
         column(
           3,
           div(
-            # tags$p("Stationary period", style = "font-weight:bold;"),
-            actionButton("add_stap", "", icon = icon("square-plus")),
-            actionButton("remove_stap", "", icon = icon("square-minus")),
-            actionButton("change_range", "", icon = icon("pen")),
+            class = "stationary-box",
+            tags$p(
+              "Labeling:",
+              class = "section-label"
+            ),
+            actionButton(
+              "label_twilight",
+              "Edit",
+              class = "btn-primary btn-sm",
+              icon = icon("pen"),
+              width = "70px"
+            ),
             downloadButton(
-              "export_stap",
-              "Export stap",
-              class = "primary"
+              "export_twilight",
+              "Export",
+              class = "btn-primary btn-sm",
+              width = "70px"
             )
           )
-        )
+        ),
+        column(
+          3,
+          div(
+            class = "stationary-box",
+            tags$p(
+              "Stationary period:",
+              class = "section-label"
+            ),
+            div(
+              class = "btn-group",
+              actionButton(
+                "add_stap",
+                NULL,
+                icon = icon("square-plus"),
+                class = "btn-sm bg-secondary"
+              ),
+              actionButton(
+                "remove_stap",
+                NULL,
+                icon = icon("square-minus"),
+                class = "btn-sm bg-secondary"
+              ),
+              actionButton(
+                "change_range",
+                NULL,
+                icon = icon("pen"),
+                class = "btn-sm bg-secondary"
+              )
+            ),
+            downloadButton(
+              "export_stap",
+              "Export",
+              class = "btn-primary btn-sm",
+              width = "70px"
+            )
+          )
+        ),
+        column(
+          2,
+          class = "p-0",
+          actionButton(
+            "show_twilight_histogram",
+            "Likelihood Settings",
+            icon = icon("sliders-h"),
+            class = "bg-secondary"
+          )
+        ),
       ),
       fluidRow(
-        class = "d-flex flex-fill", # height = "100%",
+        class = "d-flex flex-fill",
         column(
           7,
           id = "plot_container",
-          class = "d-flex flex-column flex-fill bg-black", # height = "100%",
+          class = "d-flex flex-column flex-fill bg-black",
           div(
             class = "d-flex flex-column flex-fill",
             height = "100%",

@@ -1,6 +1,6 @@
 # Initialize reactive values and configuration parameters
 
-init_reactive_values <- function(.twl, .stapath, .twl_calib) {
+init_reactive_values <- function(.twl, .stapath, .twl_calib, .pgz) {
   list(
     # Configuration parameters
     thr_likelihood = 0.95, # Threshold for likelihood map display
@@ -18,7 +18,8 @@ init_reactive_values <- function(.twl, .stapath, .twl_calib) {
     # Data reactive values
     twl = reactiveVal(.twl),
     stapath = reactiveVal(.stapath),
-    twl_calib = reactiveVal(.twl_calib)
+    twl_calib = reactiveVal(.twl_calib),
+    pgz = reactiveVal(.pgz)
   )
 }
 

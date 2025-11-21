@@ -1,7 +1,7 @@
 # Map-related reactive expressions and helper functions
 
 # Initialize map-related reactive expressions
-init_map_reactives <- function(.g, .pgz, twl, stapath, input, thr_likelihood) {
+init_map_reactives <- function(.g, .pgz, pgz, twl, stapath, input, thr_likelihood, llp_param) {
   if (is.null(.g) || is.null(.pgz)) {
     shinyjs::hide("map_container")
     return(list(has_map = FALSE))
@@ -19,15 +19,16 @@ init_map_reactives <- function(.g, .pgz, twl, stapath, input, thr_likelihood) {
   origin_proj <- c(stats::median(lonInEPSG3857), stats::median(latInEPSG3857))
 
   # Likelihood calculation helper
-  twl_llp <- function(n) log(n) / n
+  twl_llp <- function(n) llp_param() * log(n) / n
 
   map_likelihood_fx <- function(twl_id) {
+    pgz_ <- pgz()
     if (sum(twl_id) > 1) {
       l <- exp(rowSums(
-        twl_llp(sum(twl_id)) * log(.pgz[, twl_id] + .Machine$double.eps)
+        twl_llp(sum(twl_id)) * log(pgz_[, twl_id] + .Machine$double.eps)
       ))
     } else if (sum(twl_id) == 1) {
-      l <- .pgz[, twl_id]
+      l <- pgz_[, twl_id]
     } else {
       l <- rep(1, .g$dim[1] * .g$dim[2])
     }

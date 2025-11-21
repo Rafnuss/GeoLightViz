@@ -1,14 +1,15 @@
 #' @import shiny
 server <- function(input, output, session) {
   # Initialize reactive values and configuration
-  rv <- init_reactive_values(.twl, .stapath, .twl_calib)
+  rv <- init_reactive_values(.twl, .stapath, .twl_calib, .pgz)
   list2env(rv, environment())
 
   # Get known positions
   known_positions <- get_known_positions(.stapath)
 
   # Initialize map-related reactives
-  map_data <- init_map_reactives(.g, .pgz, twl, stapath, input, thr_likelihood)
+  llp_param <- reactiveVal(1.0)
+  map_data <- init_map_reactives(.g, .pgz, pgz, twl, stapath, input, thr_likelihood, llp_param)
   list2env(map_data, environment())
 
   # Initialize calibration modal module
@@ -17,7 +18,11 @@ server <- function(input, output, session) {
     twl = twl,
     stapath = stapath,
     twl_calib = twl_calib,
-    col = col
+    pgz = pgz,
+    col = col,
+    extent = extent,
+    tag = .tag,
+    llp_param = llp_param
   )
 
   # Setup navigation and return update_stapath function
