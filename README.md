@@ -1,5 +1,5 @@
 
-<!-- README.md is generated from README.Rmd. Please edit that file -->
+<!-- README.md is generated from README.Rmd. Please edit that file and use devtools::build_readme() -->
 
 # GeoLightViz
 
@@ -9,7 +9,8 @@
 experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
 [![R-CMD-check](https://github.com/Rafnuss/GeoLightViz/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/Rafnuss/GeoLightViz/actions/workflows/R-CMD-check.yaml)
 [![pkgdown](https://github.com/Rafnuss/GeoLightViz/actions/workflows/pkgdown.yaml/badge.svg)](https://github.com/Rafnuss/GeoLightViz/actions/workflows/pkgdown.yaml)
-[![lint](https://github.com/Rafnuss/GeoLightViz/actions/workflows/lint.yaml/badge.svg)](https://github.com/Rafnuss/GeoLightViz/actions/workflows/lint.yaml)
+[![lint](https://github.com/Rafnuss/GeoLightViz/actions/workflows/jarl-check.yml/badge.svg)](https://github.com/Rafnuss/GeoLightViz/actions/workflows/jarl-check.yml)
+[![format](https://github.com/Rafnuss/GeoLightViz/actions/workflows/format-check.yaml/badge.svg)](https://github.com/Rafnuss/GeoLightViz/actions/workflows/format-check.yaml)
 <!-- badges: end -->
 
 **GeoLightViz** is an R package that provides an interactive Shiny
